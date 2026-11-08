@@ -1,0 +1,20 @@
+id: "custom_recipe_id"
+title: "Your Recipe Title"
+prep_time_min: 15
+cook_time_min: 30
+servings: 4
+ingredients:
+  - item: "Ingredient Name 1"
+    amount_us: 1.0
+    unit_us: "cup"
+    amount_metric: 240.0
+    unit_metric: "ml"
+  - item: "Ingredient Name 2"
+    amount_us: 0.5
+    unit_us: "lb"
+    amount_metric: 225.0
+    unit_metric: "g"
+instructions:
+  - "First step description goes here."
+  - "Second step description goes here."
+  - "Final step description goes here."
