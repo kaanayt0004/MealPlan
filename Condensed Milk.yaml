@@ -1,0 +1,24 @@
+id: "condensed_milk"
+title: "Condensed Milk"
+category: "dessert" # Options: meal | baking | dessert
+prep_time_min: 10
+cook_time_min: 60
+servings: 1
+ingredients:
+  - item: "milk"
+    amount_us: 2
+    unit_us: "cup"
+    amount_metric: 0
+    unit_metric: ""
+  - item: "sugar"
+    amount_us: 0
+    unit_us: ""
+    amount_metric: 120
+    unit_metric: "g"
+  - item: "vanilla extract"
+    amount_us: 1
+    unit_us: "tsp"
+    amount_metric: 0
+    unit_metric: ""
+instructions:
+  - ""
