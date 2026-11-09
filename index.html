@@ -106,6 +106,12 @@
 
                 <!-- Recipe Cards List -->
                 <div class="space-y-4">
+                    <template x-if="filteredRecipes.length === 0">
+                        <div class="text-center py-12 bg-white dark:bg-[#1C1C1E] rounded-2xl border border-gray-200 dark:border-gray-800">
+                            <p class="text-gray-500 dark:text-gray-400 mb-2">No recipes found.</p>
+                            <p class="text-xs text-gray-400">Add `.yaml` files to your GitHub `recipes/` folder or click "+ Import Recipe" above.</p>
+                        </div>
+                    </template>
                     <template x-for="r in filteredRecipes" :key="r.id">
                         <div class="bg-white dark:bg-[#1C1C1E] p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-200 hover:scale-[1.01] hover:border-blue-500/50 flex justify-between items-center group">
                             <div @click="openRecipeModal(r)" class="flex-1 cursor-pointer pr-2">
@@ -274,7 +280,7 @@
         </div>
     </main>
 
-    <!-- Expanded Responsive Recipe Card Modal (max-w-4xl for larger screens) -->
+    <!-- Expanded Responsive Recipe Card Modal -->
     <div x-show="activeRecipe" 
          class="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 z-50 transition-all duration-300" x-cloak>
         
@@ -370,9 +376,6 @@
                     </template>
                 </div>
             </div>
-
-            
-            
 
             <!-- Scheduled Meals for this Day -->
             <div class="space-y-2">
@@ -475,33 +478,10 @@
     </div>
 
     <script>
-        // List of YAML/JSON recipe filenames located in your repository's recipes/ directory.
-        // Add any new recipe filenames here, and GitHub Pages will auto-load them for all users/devices!
+        // List your preset recipe filenames here.
+        // Make sure your YAML files are placed inside a 'recipes/' folder in your repository.
         const PRESET_FILES = [
             'Shepherds_Pie.yaml', 'Chocolate_Dipped_Coconut_Macaroon', 'Condensed_Milk'
-
-        ];
-
-        const DEFAULT_RECIPES = [
-            {
-                id: "pancakes",
-                title: "Quick Fluffy Pancakes",
-                category: "baking",
-                prep_time_min: 10,
-                cook_time_min: 10,
-                servings: 2,
-                ingredients: [
-                    { item: "All-Purpose Flour", amount_us: 1, unit_us: "cup", amount_metric: 120, unit_metric: "g" },
-                    { item: "Milk", amount_us: 1, unit_us: "cup", amount_metric: 240, unit_metric: "ml" },
-                    { item: "Egg", amount_us: 1, unit_us: "large", amount_metric: 1, unit_metric: "large" },
-                    { item: "Butter (melted)", amount_us: 2, unit_us: "tbsp", amount_metric: 30, unit_metric: "g" }
-                ],
-                instructions: [
-                    "Whisk flour, egg, milk, and melted butter in a bowl until just combined.",
-                    "Heat a lightly oiled griddle over medium-high heat.",
-                    "Pour batter onto griddle and cook until bubbles form, then flip and brown."
-                ]
-            }
         ];
 
         function recipeApp() {
@@ -530,15 +510,13 @@
                     this.darkMode = savedDark !== null ? JSON.parse(savedDark) : true;
                     if(this.darkMode) document.documentElement.classList.add('dark');
 
+                    // Load any previously saved recipes from local storage
                     const savedRecipes = localStorage.getItem('recipes_data');
                     if (savedRecipes) {
-                        try { this.recipes = JSON.parse(savedRecipes); } catch(e) { this.recipes = DEFAULT_RECIPES; }
-                    } else {
-                        this.recipes = DEFAULT_RECIPES;
-                        this.saveRecipes();
+                        try { this.recipes = JSON.parse(savedRecipes); } catch(e) { this.recipes = []; }
                     }
 
-                    // Auto-load preset YAML files from the repo's recipes/ directory
+                    // Auto-load preset YAML files from github raw content
                     await this.loadPresetRecipes();
 
                     const savedCart = localStorage.getItem('recipes_cart');
@@ -558,19 +536,22 @@
                 },
 
                 async loadPresetRecipes() {
+                    // Automatically pulls from your GitHub raw repository URL
+                    const username = "kaanaytekin";
+                    const repo = "MealPlan";
+                    const branch = "main"; // change to "master" if your default branch is master
+
                     for (const fileName of PRESET_FILES) {
                         try {
-                            const res = await fetch(`recipes/${fileName}`);
+                            const rawUrl = `https://raw.githubusercontent.com/${username}/${repo}/${branch}/recipes/${fileName}`;
+                            const res = await fetch(rawUrl);
                             if (!res.ok) continue;
                             const text = await res.text();
-                            let data;
-                            if (fileName.endsWith('.yaml') || fileName.endsWith('.yml')) {
-                                data = jsyaml.load(text);
-                            } else if (fileName.endsWith('.json')) {
-                                data = JSON.parse(text);
-                            }
+                            let data = jsyaml.load(text);
+                            
                             if (data && data.title) {
                                 if (!data.id) data.id = fileName.replace(/\.[^/.]+$/, "");
+                                // Avoid duplicate entries if already loaded or in localStorage
                                 if (!this.recipes.some(r => r.id === data.id || r.title === data.title)) {
                                     this.recipes.push(data);
                                 }
