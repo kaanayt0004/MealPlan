@@ -20,61 +20,48 @@
     <style> 
         body { font-family: 'Inter', sans-serif; } 
         [x-cloak] { display: none !important; }
-
-        /* Strict White-Background Print/PDF Stylesheet */
-        @media print {
-            body, html {
-                background: #ffffff !important;
-                color: #000000 !important;
-            }
-            aside, main, .no-print {
-                display: none !important;
-            }
-            #print-area {
-                display: block !important;
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                padding: 20px;
-                background: #ffffff !important;
-                color: #000000 !important;
-            }
-            #print-area * {
-                color: #000000 !important;
-                background: transparent !important;
-                border-color: #e5e7eb !important;
-                box-shadow: none !important;
-            }
-        }
     </style>
 </head>
-<body class="bg-[#F5F5F7] dark:bg-[#121212] text-gray-900 dark:text-gray-100 flex h-screen overflow-hidden select-none transition-colors duration-300">
+<body class="bg-[#F5F5F7] dark:bg-[#121212] text-gray-900 dark:text-gray-100 flex flex-col md:flex-row h-screen overflow-hidden select-none transition-colors duration-300">
 
-    <!-- Sidebar Navigation -->
-    <aside class="w-64 bg-white/80 dark:bg-[#1E1E1E]/80 backdrop-blur-xl border-r border-gray-200 dark:border-gray-800 flex flex-col p-6 z-10 shadow-sm justify-between">
+    <!-- Mobile Top Navigation Header (Visible only on screens < md) -->
+    <header class="md:hidden bg-white/80 dark:bg-[#1E1E1E]/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 flex justify-between items-center p-4 z-30">
+        <h1 class="text-lg font-bold tracking-tight flex items-center space-x-2">
+            <span>🍳</span><span>recipes</span>
+        </h1>
+        <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                <path x-show="mobileMenuOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Sidebar Navigation (Desktop permanent, Mobile collapsible menu) -->
+    <aside :class="mobileMenuOpen ? 'block' : 'hidden md:flex'"
+           class="w-full md:w-64 bg-white/95 dark:bg-[#1E1E1E]/95 backdrop-blur-xl border-r border-gray-200 dark:border-gray-800 flex-col p-6 z-20 shadow-sm justify-between absolute md:relative inset-x-0 top-14 md:top-0 bottom-0 md:bottom-auto">
         <div>
-            <h1 class="text-xl font-bold mb-8 tracking-tight flex items-center justify-center space-x-2">
+            <h1 class="hidden md:flex text-xl font-bold mb-8 tracking-tight items-center justify-center space-x-2">
                 <span>🍳</span><span>recipes</span>
             </h1>
             <nav class="space-y-2">
-                <button @click="tab = 'recipes'" 
+                <button @click="tab = 'recipes'; mobileMenuOpen = false" 
                         :class="tab === 'recipes' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 font-semibold' : 'hover:bg-gray-100 dark:hover:bg-gray-800/60 text-gray-600 dark:text-gray-400 font-medium'"
                         class="w-full flex items-center justify-center py-3 px-4 rounded-xl transition-all duration-200 text-center">
                     Recipes
                 </button>
-                <button @click="tab = 'planner'" 
+                <button @click="tab = 'planner'; mobileMenuOpen = false" 
                         :class="tab === 'planner' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 font-semibold' : 'hover:bg-gray-100 dark:hover:bg-gray-800/60 text-gray-600 dark:text-gray-400 font-medium'"
                         class="w-full flex items-center justify-center py-3 px-4 rounded-xl transition-all duration-200 text-center">
                     Meal Planner
                 </button>
-                <button @click="tab = 'cart'" 
+                <button @click="tab = 'cart'; mobileMenuOpen = false" 
                         :class="tab === 'cart' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 font-semibold' : 'hover:bg-gray-100 dark:hover:bg-gray-800/60 text-gray-600 dark:text-gray-400 font-medium'"
                         class="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl transition-all duration-200 text-center">
                     <span>Shopping Cart</span>
                     <span class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-full text-xs font-bold" x-text="Object.keys(cart).length">0</span>
                 </button>
-                <button @click="tab = 'converter'" 
+                <button @click="tab = 'converter'; mobileMenuOpen = false" 
                         :class="tab === 'converter' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 font-semibold' : 'hover:bg-gray-100 dark:hover:bg-gray-800/60 text-gray-600 dark:text-gray-400 font-medium'"
                         class="w-full flex items-center justify-center py-3 px-4 rounded-xl transition-all duration-200 text-center">
                     Unit Converter
@@ -84,19 +71,19 @@
 
         <!-- Dark / Light Theme Toggle -->
         <button @click="toggleDarkMode()" 
-                class="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all text-sm font-medium">
+                class="w-full flex items-center justify-center space-x-2 py-3 px-4 mt-6 md:mt-0 rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all text-sm font-medium">
             <span x-text="darkMode ? '☀️ Light Mode' : '🌙 Dark Mode'"></span>
         </button>
     </aside>
 
     <!-- Main Content Canvas -->
-    <main class="flex-1 overflow-y-auto p-10 relative">
-        <div class="max-w-4xl mx-auto">
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 relative">
+        <div class="max-w-5xl mx-auto">
 
             <!-- TAB 1: RECIPES -->
             <div x-show="tab === 'recipes'" class="space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-2">
-                    <h2 class="text-3xl font-bold tracking-tight">Recipe Library</h2>
+                    <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Recipe Library</h2>
                     <div class="flex items-center space-x-3">
                         <select x-model="sortBy" class="p-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1C1C1E] text-xs font-semibold">
                             <option value="default">Sort: Default</option>
@@ -110,19 +97,19 @@
                 </div>
 
                 <!-- Category Filter Pills -->
-                <div class="flex space-x-2">
-                    <button @click="filterCategory = 'all'" :class="filterCategory === 'all' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-[#1C1C1E] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all">All</button>
-                    <button @click="filterCategory = 'meal'" :class="filterCategory === 'meal' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-[#1C1C1E] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all">Meals</button>
-                    <button @click="filterCategory = 'baking'" :class="filterCategory === 'baking' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-[#1C1C1E] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all">Baking</button>
-                    <button @click="filterCategory = 'dessert'" :class="filterCategory === 'dessert' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-[#1C1C1E] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all">Desserts</button>
+                <div class="flex space-x-2 overflow-x-auto pb-1">
+                    <button @click="filterCategory = 'all'" :class="filterCategory === 'all' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-[#1C1C1E] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap">All</button>
+                    <button @click="filterCategory = 'meal'" :class="filterCategory === 'meal' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-[#1C1C1E] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Meals</button>
+                    <button @click="filterCategory = 'baking'" :class="filterCategory === 'baking' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-[#1C1C1E] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Baking</button>
+                    <button @click="filterCategory = 'dessert'" :class="filterCategory === 'dessert' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-[#1C1C1E] text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-800'" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap">Desserts</button>
                 </div>
 
                 <!-- Recipe Cards List -->
                 <div class="space-y-4">
                     <template x-for="r in filteredRecipes" :key="r.id">
-                        <div class="bg-white dark:bg-[#1C1C1E] p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-200 hover:scale-[1.015] hover:border-blue-500/50 flex justify-between items-center group">
-                            <div @click="openRecipeModal(r)" class="flex-1 cursor-pointer">
-                                <div class="flex items-center space-x-2 mb-1">
+                        <div class="bg-white dark:bg-[#1C1C1E] p-5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-200 hover:scale-[1.01] hover:border-blue-500/50 flex justify-between items-center group">
+                            <div @click="openRecipeModal(r)" class="flex-1 cursor-pointer pr-2">
+                                <div class="flex items-center space-x-2 mb-1 flex-wrap gap-y-1">
                                     <h3 class="font-bold text-lg group-hover:text-blue-500 transition-colors" x-text="r.title"></h3>
                                     <span class="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-md tracking-wider" 
                                           :class="{
@@ -145,57 +132,59 @@
 
             <!-- TAB 2: MEAL PLANNER -->
             <div x-show="tab === 'planner'" class="space-y-6" x-cloak>
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold tracking-tight">Meal Planning Calendar</h2>
+                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
+                    <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Meal Planning Calendar</h2>
                     <div class="flex items-center space-x-4">
                         <button @click="changeMonth(-1)" class="p-2 rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all font-bold">←</button>
-                        <span class="text-xl font-bold" x-text="`${currentMonthName} ${currentYear}`"></span>
+                        <span class="text-lg sm:text-xl font-bold" x-text="`${currentMonthName} ${currentYear}`"></span>
                         <button @click="changeMonth(1)" class="p-2 rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all font-bold">→</button>
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm">
-                    <!-- Day Headers -->
-                    <div class="grid grid-cols-7 gap-2 mb-2 text-center text-xs font-bold text-gray-400 uppercase tracking-wider">
-                        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-                    </div>
-                    <!-- Calendar Grid -->
-                    <div class="grid grid-cols-7 gap-2">
-                        <template x-for="blank in calendarBlanks">
-                            <div class="h-32 rounded-xl bg-gray-50/50 dark:bg-gray-900/20 border border-transparent"></div>
-                        </template>
-                        <template x-for="day in daysInMonth" :key="day">
-                            <div @click="openDayDetailModal(day)" 
-                                 class="h-32 rounded-xl border border-gray-200/80 dark:border-gray-800/80 p-2 flex flex-col justify-between cursor-pointer hover:border-blue-500 transition-all bg-white dark:bg-[#1C1C1E] hover:shadow-md relative group/cell">
-                                <div class="flex justify-between items-center">
-                                    <span class="font-bold text-sm" x-text="day"></span>
-                                    <template x-if="getTotalServingsForDay(day) > 0">
-                                        <span class="text-[10px] bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-300 px-1.5 py-0.5 rounded-md font-bold" 
-                                              x-text="`${getTotalServingsForDay(day)} serv`"></span>
-                                    </template>
-                                </div>
+                <div class="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6 shadow-sm overflow-x-auto">
+                    <div class="min-w-[600px]">
+                        <!-- Day Headers -->
+                        <div class="grid grid-cols-7 gap-2 mb-2 text-center text-xs font-bold text-gray-400 uppercase tracking-wider">
+                            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                        </div>
+                        <!-- Calendar Grid -->
+                        <div class="grid grid-cols-7 gap-2">
+                            <template x-for="blank in calendarBlanks">
+                                <div class="h-32 rounded-xl bg-gray-50/50 dark:bg-gray-900/20 border border-transparent"></div>
+                            </template>
+                            <template x-for="day in daysInMonth" :key="day">
+                                <div @click="openDayDetailModal(day)" 
+                                     class="h-32 rounded-xl border border-gray-200/80 dark:border-gray-800/80 p-2 flex flex-col justify-between cursor-pointer hover:border-blue-500 transition-all bg-white dark:bg-[#1C1C1E] hover:shadow-md relative group/cell">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-sm" x-text="day"></span>
+                                        <template x-if="getTotalServingsForDay(day) > 0">
+                                            <span class="text-[10px] bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-300 px-1.5 py-0.5 rounded-md font-bold" 
+                                                  x-text="`${getTotalServingsForDay(day)} serv`"></span>
+                                        </template>
+                                    </div>
 
-                                <div class="space-y-1 overflow-y-auto max-h-22">
-                                    <!-- Strict First-Day-Only Defrost Alerts -->
-                                    <template x-for="(defrost, idx) in getDefrostRemindersForDay(day)" :key="'def_'+idx">
-                                        <div class="text-[10px] leading-tight bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-300 p-1 rounded-md font-bold flex justify-between items-center group/def">
-                                            <span class="truncate" x-text="`🧊 Defrost: ${defrost.item}`"></span>
-                                            <button @click.stop="removeDefrostFromDay(day, idx)" class="hidden group-hover/def:block text-red-500 font-bold ml-1">✕</button>
-                                        </div>
-                                    </template>
-                                    <!-- Scheduled Meals -->
-                                    <template x-for="(meal, idx) in getMealsForDay(day)" :key="'m_'+idx">
-                                        <div class="text-[11px] leading-tight bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 p-1 rounded-md font-medium flex justify-between items-start group/m">
-                                            <div class="truncate pr-1">
-                                                <span class="font-bold block truncate" x-text="meal.title"></span>
-                                                <span class="text-[9px] text-gray-400 dark:text-gray-400" x-text="`${meal.servings} servings`"></span>
+                                    <div class="space-y-1 overflow-y-auto max-h-22">
+                                        <!-- Strict First-Day-Only Defrost Alerts -->
+                                        <template x-for="(defrost, idx) in getDefrostRemindersForDay(day)" :key="'def_'+idx">
+                                            <div class="text-[10px] leading-tight bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-300 p-1 rounded-md font-bold flex justify-between items-center group/def">
+                                                <span class="truncate" x-text="`🧊 Defrost: ${defrost.item}`"></span>
+                                                <button @click.stop="removeDefrostFromDay(day, idx)" class="hidden group-hover/def:block text-red-500 font-bold ml-1">✕</button>
                                             </div>
-                                            <button @click.stop="removeMealFromDay(day, idx)" class="hidden group-hover/m:block text-red-500 font-bold ml-1">✕</button>
-                                        </div>
-                                    </template>
+                                        </template>
+                                        <!-- Scheduled Meals -->
+                                        <template x-for="(meal, idx) in getMealsForDay(day)" :key="'m_'+idx">
+                                            <div class="text-[11px] leading-tight bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 p-1 rounded-md font-medium flex justify-between items-start group/m">
+                                                <div class="truncate pr-1">
+                                                    <span class="font-bold block truncate" x-text="meal.title"></span>
+                                                    <span class="text-[9px] text-gray-400 dark:text-gray-400" x-text="`${meal.servings} servings`"></span>
+                                                </div>
+                                                <button @click.stop="removeMealFromDay(day, idx)" class="hidden group-hover/m:block text-red-500 font-bold ml-1">✕</button>
+                                            </div>
+                                        </template>
+                                    </div>
                                 </div>
-                            </div>
-                        </template>
+                            </template>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -223,7 +212,7 @@
             <!-- TAB 4: UNIT CONVERTER -->
             <div x-show="tab === 'converter'" class="space-y-6" x-cloak>
                 <h2 class="text-3xl font-bold tracking-tight mb-6">Unit Converter & Densities</h2>
-                <div class="bg-white dark:bg-[#1C1C1E] p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-5">
+                <div class="bg-white dark:bg-[#1C1C1E] p-6 sm:p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-5">
                     <div>
                         <label class="block text-sm font-semibold mb-2">Ingredient Type (Density)</label>
                         <select x-model.number="converter.density" class="w-full p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#121212] text-gray-900 dark:text-gray-100 font-medium">
@@ -285,21 +274,21 @@
         </div>
     </main>
 
-    <!-- Modal Recipe Card Overlay -->
+    <!-- Expanded Responsive Recipe Card Modal (max-w-4xl for larger screens) -->
     <div x-show="activeRecipe" 
-         class="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center p-6 z-50 transition-all duration-300" x-cloak>
+         class="fixed inset-0 bg-black/40 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 z-50 transition-all duration-300" x-cloak>
         
         <div @click.away="activeRecipe = null"
-             class="bg-white dark:bg-[#1C1C1E] w-full max-w-2xl max-h-[90vh] rounded-3xl shadow-2xl overflow-y-auto p-8 relative border border-gray-200 dark:border-gray-800">
+             class="bg-white dark:bg-[#1C1C1E] w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl overflow-y-auto p-6 sm:p-10 relative border border-gray-200 dark:border-gray-800">
             
             <button @click="activeRecipe = null" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 dark:hover:text-white text-xl font-bold">✕</button>
             
             <template x-if="activeRecipe">
                 <div>
-                    <!-- Action Bar with Print/PDF Button -->
+                    <!-- Action Bar with TXT Export Button -->
                     <div class="flex justify-between items-start mb-4 pr-10">
                         <div>
-                            <h2 class="text-2xl font-bold" x-text="activeRecipe.title"></h2>
+                            <h2 class="text-2xl sm:text-3xl font-bold" x-text="activeRecipe.title"></h2>
                             <span class="text-xs uppercase font-extrabold px-2.5 py-0.5 rounded-md tracking-wider mt-1 inline-block" 
                                   :class="{
                                       'bg-emerald-100 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400': activeRecipe.category === 'meal',
@@ -307,8 +296,8 @@
                                       'bg-pink-100 text-pink-600 dark:bg-pink-950/60 dark:text-pink-400': activeRecipe.category === 'dessert'
                                   }" x-text="activeRecipe.category || 'meal'"></span>
                         </div>
-                        <button @click="downloadPDF()" class="bg-gray-100 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-950/40 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 border border-gray-200 dark:border-gray-700">
-                            <span>📄 Print / Export PDF</span>
+                        <button @click="exportTXT()" class="bg-gray-100 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-950/40 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 border border-gray-200 dark:border-gray-700">
+                            <span>📝 Export .TXT</span>
                         </button>
                     </div>
 
@@ -327,11 +316,11 @@
                         </div>
 
                         <h3 class="font-bold text-sm uppercase tracking-wider text-gray-400 mb-3">Ingredients (Scaled for <span x-text="currentServings"></span> servings):</h3>
-                        <div class="space-y-2 mb-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-8">
                             <template x-for="i in activeRecipe.ingredients">
                                 <div @click="openCartPrompt(i)" class="p-3.5 bg-gray-50 dark:bg-gray-800/40 rounded-2xl cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors border border-gray-200/50 dark:border-gray-800/50 flex justify-between items-center group">
                                     <span class="font-medium text-gray-900 dark:text-gray-100" x-text="`• ${i.item}`"></span>
-                                    <span class="text-sm text-gray-500 group-hover:text-blue-500 transition-colors font-medium" 
+                                    <span class="text-sm text-gray-500 group-hover:text-blue-500 transition-colors font-medium ml-2" 
                                           x-text="`${(i.amount_us * servingMultiplier).toFixed(2).replace(/\.00$/, '')} ${i.unit_us} / ${(i.amount_metric * servingMultiplier).toFixed(2).replace(/\.00$/, '')} ${i.unit_metric}`"></span>
                                 </div>
                             </template>
@@ -350,35 +339,6 @@
                 </div>
             </template>
         </div>
-    </div>
-
-    <!-- Hidden Dedicated Pure-Text White Background Print Layout -->
-    <div id="print-area" class="hidden">
-        <template x-if="activeRecipe">
-            <div>
-                <h1 style="font-size: 24pt; font-weight: bold; margin-bottom: 8px;" x-text="activeRecipe.title"></h1>
-                <p style="font-size: 11pt; color: #555; margin-bottom: 24px;" x-text="`Category: ${(activeRecipe.category || 'meal').toUpperCase()} | Prep: ${activeRecipe.prep_time_min} mins | Cook: ${activeRecipe.cook_time_min} mins | Yield: ${currentServings} servings`"></p>
-
-                <hr style="border: 0; border-top: 1px solid #ccc; margin-bottom: 20px;">
-
-                <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; margin-bottom: 12px;">Ingredients:</h2>
-                <ul style="list-style-type: none; padding-left: 0; margin-bottom: 24px;">
-                    <template x-for="i in activeRecipe.ingredients">
-                        <li style="font-size: 11pt; padding: 6px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-                            <span style="font-weight: 600;" x-text="`• ${i.item}`"></span>
-                            <span x-text="`${(i.amount_us * servingMultiplier).toFixed(2).replace(/\.00$/, '')} ${i.unit_us} (${(i.amount_metric * servingMultiplier).toFixed(2).replace(/\.00$/, '')} ${i.unit_metric})`"></span>
-                        </li>
-                    </template>
-                </ul>
-
-                <h2 style="font-size: 14pt; font-weight: bold; text-transform: uppercase; margin-bottom: 12px;">Instructions:</h2>
-                <ol style="padding-left: 20px; font-size: 11pt; line-height: 1.6;">
-                    <template x-for="(step, idx) in activeRecipe.instructions">
-                        <li style="margin-bottom: 10px;" x-text="step"></li>
-                    </template>
-                </ol>
-            </div>
-        </template>
     </div>
 
     <!-- Modal Day Detail View -->
@@ -410,6 +370,9 @@
                     </template>
                 </div>
             </div>
+
+            
+            
 
             <!-- Scheduled Meals for this Day -->
             <div class="space-y-2">
@@ -512,6 +475,13 @@
     </div>
 
     <script>
+        // List of YAML/JSON recipe filenames located in your repository's recipes/ directory.
+        // Add any new recipe filenames here, and GitHub Pages will auto-load them for all users/devices!
+        const PRESET_FILES = [
+            'Shepherds_Pie.yaml', 'Chocolate_Dipped_Coconut_Macaroon', 'Condensed_Milk'
+
+        ];
+
         const DEFAULT_RECIPES = [
             {
                 id: "pancakes",
@@ -531,52 +501,31 @@
                     "Heat a lightly oiled griddle over medium-high heat.",
                     "Pour batter onto griddle and cook until bubbles form, then flip and brown."
                 ]
-            },
-            {
-                id: "chili",
-                title: "Classic Beef Chili",
-                category: "meal",
-                prep_time_min: 15,
-                cook_time_min: 45,
-                servings: 4,
-                ingredients: [
-                    { item: "Ground Beef", amount_us: 1.0, unit_us: "lb", amount_metric: 450.0, unit_metric: "g" },
-                    { item: "Kidney Beans", amount_us: 1.0, unit_us: "can", amount_metric: 400.0, unit_metric: "g" },
-                    { item: "Diced Tomatoes", amount_us: 14.5, unit_us: "oz", amount_metric: 410.0, unit_metric: "g" },
-                    { item: "Chili Powder", amount_us: 2.0, unit_us: "tbsp", amount_metric: 30.0, unit_metric: "ml" }
-                ],
-                instructions: [
-                    "Brown ground beef in a large pot over medium-high heat until cooked through.",
-                    "Drain excess fat, then add diced tomatoes and kidney beans.",
-                    "Stir in chili powder, reduce heat to low, and simmer uncovered for 30 minutes.",
-                    "Serve hot with optional cheese or sour cream."
-                ]
             }
         ];
 
         function recipeApp() {
             return {
                 darkMode: true,
+                mobileMenuOpen: false,
                 tab: 'recipes',
                 recipes: [],
                 cart: {},
-                mealPlan: {}, // "YYYY-MM-DD": [{ title, servings }]
-                defrostReminders: {}, // "YYYY-MM-DD": [{ item, forMeal }]
+                mealPlan: {},
+                defrostReminders: {},
                 activeRecipe: null,
                 currentServings: 2,
                 cartPrompt: { open: false, item: null, qty: 1, unit: 'g' },
                 converter: { val: 1, density: 0.53, from: 'cup', to: 'g', result: 'Result: —' },
                 
-                // Sorting & Filter State
                 sortBy: 'default',
                 filterCategory: 'all',
 
-                // Meal Planner State
                 currentDate: new Date(),
                 dayDetailModal: { open: false, day: 1 },
                 mealPlannerModal: { open: false, day: 1, selectedRecipe: '', customMeal: '', defrostItem: '', endDate: '', dateConfigs: [] },
 
-                initApp() {
+                async initApp() {
                     const savedDark = localStorage.getItem('recipes_darkMode');
                     this.darkMode = savedDark !== null ? JSON.parse(savedDark) : true;
                     if(this.darkMode) document.documentElement.classList.add('dark');
@@ -588,6 +537,9 @@
                         this.recipes = DEFAULT_RECIPES;
                         this.saveRecipes();
                     }
+
+                    // Auto-load preset YAML files from the repo's recipes/ directory
+                    await this.loadPresetRecipes();
 
                     const savedCart = localStorage.getItem('recipes_cart');
                     if (savedCart) {
@@ -603,6 +555,31 @@
                     if (savedDefrost) {
                         try { this.defrostReminders = JSON.parse(savedDefrost); } catch(e) { this.defrostReminders = {}; }
                     }
+                },
+
+                async loadPresetRecipes() {
+                    for (const fileName of PRESET_FILES) {
+                        try {
+                            const res = await fetch(`recipes/${fileName}`);
+                            if (!res.ok) continue;
+                            const text = await res.text();
+                            let data;
+                            if (fileName.endsWith('.yaml') || fileName.endsWith('.yml')) {
+                                data = jsyaml.load(text);
+                            } else if (fileName.endsWith('.json')) {
+                                data = JSON.parse(text);
+                            }
+                            if (data && data.title) {
+                                if (!data.id) data.id = fileName.replace(/\.[^/.]+$/, "");
+                                if (!this.recipes.some(r => r.id === data.id || r.title === data.title)) {
+                                    this.recipes.push(data);
+                                }
+                            }
+                        } catch (err) {
+                            console.warn(`Could not load preset recipe: recipes/${fileName}`, err);
+                        }
+                    }
+                    this.saveRecipes();
                 },
 
                 get filteredRecipes() {
@@ -643,9 +620,37 @@
                     this.currentServings = r.servings;
                 },
 
-                downloadPDF() {
+                exportTXT() {
                     if (!this.activeRecipe) return;
-                    window.print();
+                    const r = this.activeRecipe;
+                    const mult = this.servingMultiplier;
+                    
+                    let content = `${r.title.toUpperCase()}\n`;
+                    content += `Category: ${(r.category || 'meal').toUpperCase()}\n`;
+                    content += `Prep Time: ${r.prep_time_min} mins | Cook Time: ${r.cook_time_min} mins | Servings: ${this.currentServings}\n`;
+                    content += `=`.repeat(40) + `\n\n`;
+
+                    content += `INGREDIENTS:\n`;
+                    r.ingredients.forEach(i => {
+                        const usAmt = (i.amount_us * mult).toFixed(2).replace(/\.00$/, '');
+                        const metricAmt = (i.amount_metric * mult).toFixed(2).replace(/\.00$/, '');
+                        content += `- ${i.item}: ${usAmt} ${i.unit_us} (${metricAmt} ${i.unit_metric})\n`;
+                    });
+
+                    content += `\nINSTRUCTIONS:\n`;
+                    r.instructions.forEach((step, idx) => {
+                        content += `${idx + 1}. ${step}\n`;
+                    });
+
+                    const blob = new Blob([content], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${r.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}_recipe.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
                 },
 
                 deleteRecipe(id) {
@@ -680,7 +685,6 @@
                     this.cartPrompt.open = false;
                 },
 
-                // Calendar Methods
                 get currentYear() { return this.currentDate.getFullYear(); },
                 get currentMonth() { return this.currentDate.getMonth(); },
                 get currentMonthName() {
@@ -779,7 +783,6 @@
                         }
                     });
 
-                    // Strict First-Day-Only Defrost Logic
                     if (this.mealPlannerModal.defrostItem && firstEnabledDateObj) {
                         const prevDate = new Date(firstEnabledDateObj);
                         prevDate.setDate(prevDate.getDate() - 1);
@@ -812,7 +815,6 @@
                     }
                 },
 
-                // Precision Conversion Matrix & Fractional Culinary Logic
                 convertUnits() {
                     const val = parseFloat(this.converter.val) || 0;
                     const density = parseFloat(this.converter.density);

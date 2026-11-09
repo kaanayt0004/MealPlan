@@ -1,0 +1,101 @@
+id: "shepherds_pie_custom"
+title: "Shepherd's Pie"
+category: "meal"
+prep_time_min: 25
+cook_time_min: 50
+servings: 6
+ingredients:
+  - item: "Russet potatoes, peeled and quartered"
+    amount_us: 2.5
+    unit_us: "lb"
+    amount_metric: 1134.0
+    unit_metric: "g"
+  - item: "Unsalted butter"
+    amount_us: 8.0
+    unit_us: "tbsp"
+    amount_metric: 120.0
+    unit_metric: "g"
+  - item: "Whole milk"
+    amount_us: 0.5
+    unit_us: "cup"
+    amount_metric: 120.0
+    unit_metric: "ml"
+  - item: "Shredded aged white Cheddar"
+    amount_us: 1.0
+    unit_us: "cup"
+    amount_metric: 100.0
+    unit_metric: "g"
+  - item: "Yellow onion, diced small"
+    amount_us: 1.25
+    unit_us: "cup"
+    amount_metric: 150.0
+    unit_metric: "g"
+  - item: "Medium carrots, peeled and diced small"
+    amount_us: 1.25
+    unit_us: "cup"
+    amount_metric: 150.0
+    unit_metric: "g"
+  - item: "Garlic, minced"
+    amount_us: 4.0
+    unit_us: "clove"
+    amount_metric: 4.0
+    unit_metric: "clove"
+  - item: "Fresh thyme"
+    amount_us: 4.0
+    unit_us: "sprig"
+    amount_metric: 4.0
+    unit_metric: "sprig"
+  - item: "Fresh rosemary (4-inch sprigs)"
+    amount_us: 2.0
+    unit_us: "sprig"
+    amount_metric: 2.0
+    unit_metric: "sprig"
+  - item: "Lean ground beef"
+    amount_us: 0.75
+    unit_us: "lb"
+    amount_metric: 340.0
+    unit_metric: "g"
+  - item: "Ground lamb (or all ground beef)"
+    amount_us: 0.75
+    unit_us: "lb"
+    amount_metric: 340.0
+    unit_metric: "g"
+  - item: "Tomato paste"
+    amount_us: 0.33
+    unit_us: "cup"
+    amount_metric: 80.0
+    unit_metric: "g"
+  - item: "All-purpose flour"
+    amount_us: 1.0
+    unit_us: "tbsp"
+    amount_metric: 8.0
+    unit_metric: "g"
+  - item: "Beef stock"
+    amount_us: 0.75
+    unit_us: "cup"
+    amount_metric: 180.0
+    unit_metric: "ml"
+  - item: "Fresh parsley, chopped"
+    amount_us: 1.0
+    unit_us: "cup"
+    amount_metric: 30.0
+    unit_metric: "g"
+  - item: "Kosher salt"
+    amount_us: 2.0
+    unit_us: "tbsp"
+    amount_metric: 30.0
+    unit_metric: "g"
+  - item: "Freshly ground black pepper"
+    amount_us: 1.0
+    unit_us: "pinch"
+    amount_metric: 1.0
+    unit_metric: "pinch"
+instructions:
+  - "In a large pot, bring a gallon of water and 2 tablespoons salt to a boil over high heat. Add potatoes and boil for 15 to 20 minutes, until soft."
+  - "Heat 6 tablespoons of butter and milk together until melted. Drain potatoes well and mash hot potatoes until smooth. Mix in the hot butter mixture, stir in Cheddar, and season to taste with salt and pepper. Cover and set aside."
+  - "Preheat oven to 375°F. Melt remaining 2 tablespoons butter in a large oven-safe skillet or braiser over medium heat. Add onion, carrot, garlic, thyme, and rosemary; cook for 10 minutes until onions are translucent."
+  - "Add ground beef and lamb, cooking and breaking up meat until no longer pink. Drain excess fat if desired, and season with salt and pepper."
+  - "Stir in tomato paste and cook for 2 to 3 minutes. Sprinkle flour over the mixture and cook for 1 minute."
+  - "Add beef stock and cook until liquid thickens slightly. Stir in chopped parsley and remove thyme and rosemary stems."
+  - "Top meat mixture with dollops of mashed potatoes and spread evenly. (Optionally transfer meat mixture to a 3-quart casserole dish before adding potatoes)."
+  - "Bake pie for 30 minutes until potatoes begin to brown and edges are bubbling. Let stand 15 minutes before serving."
