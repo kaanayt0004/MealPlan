@@ -1,0 +1,72 @@
+id: "kung-pao-chicken"
+title: "Kung Pao Chicken"
+category: "meal"
+prep_time_min: 10
+cook_time_min: 10
+servings: 4
+ingredients:
+  - item: "Boneless, skinless chicken breasts, cut into ½-inch chunks"
+    amount_us: 1
+    unit_us: "pound"
+    amount_metric: 454
+    unit_metric: "g"
+
+  - item: "Soy sauce"
+    amount_us: 3
+    unit_us: "tablespoons"
+    amount_metric: 45
+    unit_metric: "ml"
+
+  - item: "Cornstarch"
+    amount_us: 2
+    unit_us: "teaspoons"
+    amount_metric: 5
+    unit_metric: "g"
+
+  - item: "Salt"
+    amount_us: 1
+    unit_us: "pinch"
+    amount_metric: 1
+    unit_metric: "pinch"
+
+  - item: "Ground black or Sichuan pepper"
+    amount_us: 1
+    unit_us: "pinch"
+    amount_metric: 1
+    unit_metric: "pinch"
+
+  - item: "Chinkiang (black) vinegar or balsamic vinegar"
+    amount_us: 1.5
+    unit_us: "tablespoons"
+    amount_metric: 22.5
+    unit_metric: "ml"
+
+  - item: "Sugar"
+    amount_us: 2
+    unit_us: "teaspoons"
+    amount_metric: 8
+    unit_metric: "g"
+
+  - item: "Neutral oil, such as grapeseed oil"
+    amount_us: 0.25
+    unit_us: "cup"
+    amount_metric: 60
+    unit_metric: "ml"
+
+  - item: "Small dried red chiles"
+    amount_us: 0.5
+    unit_us: "cup"
+    amount_metric: 15
+    unit_metric: "g"
+
+instructions:
+  - "Mix the chicken with 1 tablespoon soy sauce, 1 teaspoon cornstarch, and a big pinch of salt and pepper in a bowl until evenly coated. Let sit while preparing the sauce."
+  - "In a small bowl, stir together the vinegar, sugar, remaining 2 tablespoons soy sauce, and remaining 1 teaspoon cornstarch."
+  - "Combine the oil and dried red chiles in a wok or large nonstick skillet over medium heat."
+  - "When the chiles start to sizzle and brown, about 15 seconds, push them to one side of the pan."
+  - "Add the chicken to the other side of the pan and spread it into a single, even layer. Cook without moving for 3 to 5 minutes, until the bottoms are dark golden brown."
+  - "If the chiles start to blacken, move them on top of the chicken to prevent burning."
+  - "Flip the chicken in portions using a large spatula. Cook for another 1 to 2 minutes, until the meat is almost completely cooked through."
+  - "Stir the prepared sauce and pour it into the pan."
+  - "Stir until the sauce thickens and evenly coats the chicken."
+  - "Immediately transfer to a plate and serve hot."
